@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ans = "";
+
+        if(s.length() <= 1){
+            return s;
+        }
+
+        for(int i = 1;i < s.length();i++){
+            int left = i;
+            int right = i;
+            while(s[left]==s[right]){
+                left--;
+                right++;
+                if(left==-1 || right==s.length()) break;
+            }
+
+            string currPalindrome = s.substr(left+1,right-left-1);
+
+            if(currPalindrome.length() > ans.length()){
+                ans = currPalindrome;
+            }
+
+            // now this is for checking even length palidrome on every character
+            left = i-1;
+            right = i;
+
+            while(s[left]==s[right]){
+                left--;
+                right++;
+                if(left==-1 || right==s.length()) break;
+            }
+
+            currPalindrome = s.substr(left+1,right-left-1);
+
+            if(currPalindrome.length() > ans.length()){
+                ans = currPalindrome;
+            }
+        }
+
+        return ans;
+    }
+};
