@@ -1,0 +1,39 @@
+class Solution {
+public:
+    unordered_set<string> st;
+    int n;
+
+    int t[305];
+
+    bool solve(int i, string &s){
+        if(i >= n){
+            return true;
+        }
+        if(st.find(s) != st.end()){
+            return true;
+        }
+
+        if(t[i] != -1){
+            return t[i];
+        }
+
+        for(int l = 1; l<n; l++){
+            string temp = s.substr(i,l);
+            if(st.find(temp) != st.end() && solve(i+l,s)){
+                return t[i] = true;
+            }
+        }
+        return t[i] = false;
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        memset(t,-1,sizeof(t));
+        n = s.length();
+
+        for(string &word: wordDict){
+            st.insert(word);
+        }
+
+        return solve(0,s);
+    }
+};
