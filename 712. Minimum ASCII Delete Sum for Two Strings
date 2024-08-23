@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+    int getMinimumDeleteSum(int i, int j, string &s1, string &s2, vector<vector<int>> &dp){
+        //base cases
+        if(i < 0 ){
+            // this means i have to delete all the characters in s2
+            int sum = 0;
+            for(int k = 0;k<=j;k++){
+                sum+=s2[k];
+            }
+            return sum;
+        }
+        if(j < 0 ){
+            // this means i have to delete all the characters in s1
+            int sum = 0;
+            for(int k = 0;k<=i;k++){
+                sum+=s1[k];
+            }
+            return sum;
+        }
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        if(s1[i] == s2[j]){
+            dp[i][j] = 0 + getMinimumDeleteSum(i-1,j-1,s1,s2,dp);
+        }
+        else{
+            dp[i][j] = min(s1[i] + getMinimumDeleteSum(i-1,j,s1,s2,dp) , s2[j] + getMinimumDeleteSum(i,j-1,s1,s2,dp));
+        }
+
+        return dp[i][j];
+
+    }
+    int minimumDeleteSum(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        return getMinimumDeleteSum(m-1,n-1,s1,s2,dp);
+    }
+};
