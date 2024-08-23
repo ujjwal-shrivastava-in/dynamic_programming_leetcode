@@ -1,0 +1,29 @@
+class Solution {
+public:
+
+    int getMinDistance(int i,int j, string &s1, string &s2, vector<vector<int>> &dp){
+        if(j<0) return i+1;
+        if(i<0) return j+1;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int ans = 0;
+        if(s1[i] == s2[j]) dp[i][j] = getMinDistance(i-1,j-1,s1,s2,dp);
+        else{
+            dp[i][j] = 1+ min(getMinDistance(i,j-1,s1,s2,dp), min(getMinDistance(i-1,j,s1,s2,dp),getMinDistance(i-1,j-1,s1,s2,dp)));
+        }
+
+        return dp[i][j];
+    }
+
+    int minDistance(string word1, string word2) {
+
+        int m = word1.length()-1;
+        int n = word2.length()-1;
+
+        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
+
+        return getMinDistance(m,n,word1,word2,dp);
+        
+    }
+};
