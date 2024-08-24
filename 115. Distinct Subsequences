@@ -1,0 +1,34 @@
+class Solution {
+public:
+    long countSub(string &s, string &t, int i, int j, vector<vector<long>> &dp) {
+        // If we've matched all characters of t
+        if (j == t.length()) return 1;
+
+        // If we've exhausted s but not fully matched t
+        if (i == s.length()) return 0;
+
+        // Check if the subproblem is already solved
+        if (dp[i][j] != -1) return dp[i][j];
+
+        long ans = 0;
+
+        // If the characters match, consider both including and excluding s[i]
+        if (s[i] == t[j]) {
+            ans += countSub(s, t, i + 1, j + 1, dp); // Include s[i]
+        }
+
+        // Consider excluding s[i] (regardless of whether it matches t[j] or not)
+        ans += countSub(s, t, i + 1, j, dp);
+
+        // Store the result in dp array
+        dp[i][j] = ans;
+
+        return dp[i][j];
+    }
+
+    long numDistinct(string s, string t) {
+        // Use a vector of long to avoid overflow
+        vector<vector<long>> dp(s.length(), vector<long>(t.length(), -1));
+        return countSub(s, t, 0, 0, dp);
+    }
+};
